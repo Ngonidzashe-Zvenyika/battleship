@@ -6,11 +6,8 @@ import {
   NewDestroyer,
 } from './ships.js';
 
-function NewIndicator(ship, value) {
-  return {
-    ship,
-    value,
-  };
+function NewIndicator(ship) {
+  return { ship };
 }
 
 function getShip(shipName) {
@@ -34,7 +31,7 @@ export default class Gameboard {
     for (let i = 0; i < 10; i += 1) {
       this.board[i] = [];
       for (let j = 0; j < 10; j += 1) {
-        this.board[i][j] = NewIndicator(null, 0);
+        this.board[i][j] = NewIndicator(null);
       }
     }
     this.missedAttacks = [];
@@ -51,7 +48,7 @@ export default class Gameboard {
           return;
         } else {
           while (length > 0) {
-            this.board[x][y] = NewIndicator(ship, 1);
+            this.board[x][y] = NewIndicator(ship);
             y += 1;
             length -= 1;
           }
@@ -62,7 +59,7 @@ export default class Gameboard {
           return;
         } else {
           while (length > 0) {
-            this.board[x][y] = NewIndicator(ship, 1);
+            this.board[x][y] = NewIndicator(ship);
             x += 1;
             length -= 1;
           }
