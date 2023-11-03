@@ -41,3 +41,25 @@ test('Fail to place carrier vertically at [6,0] ', () => {
   expect(gameboard.board[6][0].value).toBe(0);
   expect(gameboard.board[6][0].ship).toBe(null);
 });
+
+test('Receive attack on empty square [0,0]', () => {
+  const gameboard = new Gameboard();
+  gameboard.receiveAttack([0, 0]);
+  const attackLocation = gameboard.missedAttacks.find((attack) => {
+    const [x, y] = attack;
+    return x === 0 && y === 0;
+  });
+  expect(attackLocation).toEqual([0, 0]);
+});
+
+test('Receive attack on occupied square [0,0]', () => {
+  const gameboard = new Gameboard();
+  gameboard.place([0, 0], 'carrier', 'horizontal');
+  gameboard.receiveAttack([0, 0]);
+  const attackLocation = gameboard.succesfulAttacks.find((attack) => {
+    const [x, y] = attack;
+    return x === 0 && y === 0;
+  });
+  expect(gameboard.board[0][0].ship.hitCount).toBe(1);
+  expect(attackLocation).toEqual([0, 0]);
+});
