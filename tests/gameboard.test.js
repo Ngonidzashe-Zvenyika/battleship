@@ -62,3 +62,29 @@ test('Receive attack on occupied square [0,0]', () => {
   expect(location.ship.hitCount).toBe(1);
   expect(attackLocation).toEqual([0, 0]);
 });
+
+test('Report that all ships have been sunk', () => {
+  const gameboard = new Gameboard();
+  gameboard.place([0, 0], 'carrier', 'horizontal');
+  for (let i = 0; i < 5; i += 1) {
+    const location = gameboard.board[0][i];
+    location.ship.hit();
+  }
+  gameboard.place([1, 0], 'battleship', 'horizontal');
+  for (let i = 0; i < 4; i += 1) {
+    const location = gameboard.board[1][i];
+    location.ship.hit();
+  }
+  expect(gameboard.allShipsSunk()).toBe(true);
+});
+
+test("Report that 'not' all ships have been sunk", () => {
+  const gameboard = new Gameboard();
+  gameboard.place([0, 0], 'carrier', 'horizontal');
+  for (let i = 0; i < 5; i += 1) {
+    const location = gameboard.board[0][i];
+    location.ship.hit();
+  }
+  gameboard.place([1, 0], 'battleship', 'horizontal');
+  expect(gameboard.allShipsSunk()).toBe(false);
+});
