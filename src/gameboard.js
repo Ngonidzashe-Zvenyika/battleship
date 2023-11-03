@@ -37,6 +37,8 @@ export default class Gameboard {
         this.board[i][j] = NewIndicator(null, 0);
       }
     }
+    this.missedAttacks = [];
+    this.succesfulAttacks = [];
   }
 
   place = (shipLocation, shipName, shipOrientation) => {
@@ -66,6 +68,17 @@ export default class Gameboard {
           }
         }
         break;
+    }
+  };
+
+  receiveAttack = (location) => {
+    const [x, y] = location;
+    const ship = this.board[x][y].ship;
+    if (ship) {
+      ship.hit();
+      this.succesfulAttacks.push(location);
+    } else {
+      this.missedAttacks.push(location);
     }
   };
 }
