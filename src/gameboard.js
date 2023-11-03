@@ -34,6 +34,7 @@ export default class Gameboard {
         this.board[i][j] = NewIndicator(null);
       }
     }
+    this.ships = [];
     this.missedAttacks = [];
     this.succesfulAttacks = [];
   }
@@ -47,6 +48,7 @@ export default class Gameboard {
         if (y + length > 10) {
           return;
         } else {
+          this.ships.push(ship);
           while (length > 0) {
             this.board[x][y] = NewIndicator(ship);
             y += 1;
@@ -58,6 +60,7 @@ export default class Gameboard {
         if (x + length > 10) {
           return;
         } else {
+          this.ships.push(ship);
           while (length > 0) {
             this.board[x][y] = NewIndicator(ship);
             x += 1;
@@ -77,5 +80,9 @@ export default class Gameboard {
     } else {
       this.missedAttacks.push(location);
     }
+  };
+
+  allShipsSunk = () => {
+    return this.ships.every((ship) => ship.isSunk() === true);
   };
 }
