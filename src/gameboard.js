@@ -85,4 +85,26 @@ export default class Gameboard {
   allShipsSunk = () => {
     return this.ships.every((ship) => ship.isSunk() === true);
   };
+
+  getAvailableMoves = () => {
+    const moves = [];
+    this.board.forEach((row, i) =>
+      row.forEach((cell, j) => {
+        const isPreviousMissedAttack = this.missedAttacks.find((attack) => {
+          const [x, y] = attack;
+          return i === x && j === y;
+        });
+        const isPreviousSuccesfulAttack = this.succesfulAttacks.find(
+          (attack) => {
+            const [x, y] = attack;
+            return i === x && j === y;
+          },
+        );
+        if (!(isPreviousMissedAttack || isPreviousSuccesfulAttack)) {
+          moves.push([i, j]);
+        }
+      }),
+    );
+    return moves;
+  };
 }
