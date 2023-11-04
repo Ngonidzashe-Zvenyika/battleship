@@ -88,3 +88,26 @@ test("Report that 'not' all ships have been sunk", () => {
   gameboard.place([1, 0], 'battleship', 'horizontal');
   expect(gameboard.allShipsSunk()).toBe(false);
 });
+
+test('Get available moves on empty board', () => {
+  const gameboard = new Gameboard();
+  const moves = [];
+  gameboard.board.forEach((row, i) =>
+    row.forEach((cell, j) => moves.push([i, j])),
+  );
+  expect(gameboard.getAvailableMoves()).toEqual(moves);
+});
+
+test('Get available moves on busy board', () => {
+  const gameboard = new Gameboard();
+  gameboard.receiveAttack([0, 0]);
+  const moves = [];
+  gameboard.board.forEach((row, i) =>
+    row.forEach((cell, j) => {
+      if (!(i == 0 && j == 0)) {
+        moves.push([i, j]);
+      }
+    }),
+  );
+  expect(gameboard.getAvailableMoves()).toEqual(moves);
+});
