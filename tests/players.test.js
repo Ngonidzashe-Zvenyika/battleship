@@ -1,5 +1,5 @@
 import Gameboard from '../src/gameboard';
-import { HumanPlayer, AiPlayer } from '../src/player';
+import { HumanPlayer, AiPlayer } from '../src/players';
 
 test('Human player attacks given square on enemy board', () => {
   const aiBoard = new Gameboard();
