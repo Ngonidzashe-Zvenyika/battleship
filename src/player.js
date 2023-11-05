@@ -1,5 +1,6 @@
 class HumanPlayer {
-  constructor(opponentBoard) {
+  constructor(opponent, opponentBoard) {
+    this.opponent = opponent;
     this.opponentBoard = opponentBoard;
   }
   attack = (location) => {
@@ -11,6 +12,7 @@ class HumanPlayer {
     });
     if (isAvailable) {
       this.opponentBoard.receiveAttack(location);
+      this.opponent.attack();
     } else {
       return false;
     }
