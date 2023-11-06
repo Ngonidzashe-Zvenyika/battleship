@@ -83,7 +83,9 @@ export default class Gameboard {
   };
 
   allShipsSunk = () => {
-    return this.ships.every((ship) => ship.isSunk() === true);
+    if (this.ships.length > 0) {
+      return this.ships.every((ship) => ship.isSunk() === true);
+    }
   };
 
   getAvailableMoves = () => {
