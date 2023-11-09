@@ -39,35 +39,77 @@ export default class Gameboard {
     this.succesfulAttacks = [];
   }
 
-  place = (shipLocation, shipName, shipOrientation) => {
+  evaluatePlacement(shipLocation, shipOrientation, shipLength) {
     let [x, y] = shipLocation;
-    const ship = getShip(shipName);
-    let length = ship.length;
+    let targetCells = [];
+    let valid = false;
     switch (shipOrientation) {
       case 'horizontal':
-        if (y + length > 10) {
-          return;
+        if (y + shipLength > 10) {
+          return { valid, targetCells: null };
         } else {
-          this.ships.push(ship);
-          while (length > 0) {
+          valid = true;
+          while (shipLength > 0) {
+            if (this.board[x][y].ship) {
+              valid = false;
+              break;
+            }
+            targetCells.push([x, y]);
+            y += 1;
+            shipLength -= 1;
+          }
+          return valid === true
+            ? { valid, targetCells }
+            : { valid, targetCells: null };
+        }
+      case 'vertical':
+        if (x + shipLength > 10) {
+          return { valid, targetCells: null };
+        } else {
+          valid = true;
+          while (shipLength > 0) {
+            if (this.board[x][y].ship) {
+              valid = false;
+              break;
+            }
+            targetCells.push([x, y]);
+            x += 1;
+            shipLength -= 1;
+          }
+          return valid === true
+            ? { valid, targetCells }
+            : { valid, targetCells: null };
+        }
+    }
+  }
+
+  place = (shipLocation, shipName, shipOrientation) => {
+    const ship = getShip(shipName);
+    let shipLength = ship.length;
+    let [x, y] = shipLocation;
+    const evaluation = this.evaluatePlacement(
+      shipLocation,
+      shipOrientation,
+      shipLength,
+    );
+    if (evaluation.valid) {
+      this.ships.push(ship);
+      switch (shipOrientation) {
+        case 'horizontal':
+          while (shipLength > 0) {
             this.board[x][y] = NewIndicator(ship);
             y += 1;
-            length -= 1;
+            shipLength -= 1;
           }
-        }
-        break;
-      case 'vertical':
-        if (x + length > 10) {
-          return;
-        } else {
-          this.ships.push(ship);
-          while (length > 0) {
+          break;
+        case 'vertical':
+          while (shipLength > 0) {
             this.board[x][y] = NewIndicator(ship);
             x += 1;
-            length -= 1;
+            shipLength -= 1;
           }
-        }
-        break;
+          break;
+      }
     }
   };
 
@@ -89,7 +131,7 @@ export default class Gameboard {
   };
 
   getAvailableMoves = () => {
-    const moves = [];
+    const availableMoves = [];
     this.board.forEach((row, i) =>
       row.forEach((cell, j) => {
         const isPreviousMissedAttack = this.missedAttacks.find((attack) => {
@@ -103,10 +145,10 @@ export default class Gameboard {
           },
         );
         if (!(isPreviousMissedAttack || isPreviousSuccesfulAttack)) {
-          moves.push([i, j]);
+          availableMoves.push([i, j]);
         }
       }),
     );
-    return moves;
+    return availableMoves;
   };
 }
