@@ -19,7 +19,7 @@ function renderOverlay() {
 function displayResult(gameStatus) {
   const result = document.createElement('div');
   result.classList.add('result');
-  const heading = document.createElement('h1');
+  const heading = document.createElement('h2');
   heading.innerText = 'Game Over';
   const winner = document.createElement('p');
   winner.innerText =
@@ -45,13 +45,13 @@ function renderAttackedSquares(player, square, location) {
   player.opponentBoard.missedAttacks.find((attack) => {
     const [i, j] = attack;
     if (x === i && j === y) {
-      square.style.backgroundColor = 'green';
+      square.style.backgroundColor = 'hsl(85, 50%, 70%)';
     }
   });
   player.opponentBoard.succesfulAttacks.find((attack) => {
     const [i, j] = attack;
     if (x === i && j === y) {
-      square.style.backgroundColor = 'red';
+      square.style.backgroundColor = 'hsl(15, 50%, 70%)';
     }
   });
 }
@@ -83,8 +83,11 @@ function addAttackListener(human, square, [x, y]) {
     if (gameStatus.moveValid) {
       const main = document.querySelector('main');
       main.replaceChildren();
-      main.appendChild(renderHumanBoard(human.opponent));
-      main.appendChild(renderAiBoard(human));
+      const boards = document.createElement('div');
+      boards.classList.add('boards');
+      boards.appendChild(renderHumanBoard(human.opponent));
+      boards.appendChild(renderAiBoard(human));
+      main.appendChild(boards);
       if (gameStatus.gameOver) displayResult(gameStatus);
     }
   });
@@ -122,8 +125,11 @@ function renderHeader() {
 
 function renderMain(players) {
   const main = document.createElement('main');
-  main.appendChild(renderHumanBoard(players.ai));
-  main.appendChild(renderAiBoard(players.human));
+  const boards = document.createElement('div');
+  boards.classList.add('boards');
+  boards.appendChild(renderHumanBoard(players.ai));
+  boards.appendChild(renderAiBoard(players.human));
+  main.appendChild(boards);
   return main;
 }
 
@@ -154,7 +160,7 @@ function addMouseoverListener(square, ai, location) {
           const [i, j] = cell;
           return x === i && y == j;
         });
-        squares[index].style.backgroundColor = 'silver';
+        squares[index].style.backgroundColor = 'hsl(15, 0%, 75%)';
       });
     }
   });
@@ -180,7 +186,7 @@ function addMouseoutListener(square, ai, location) {
           const [i, j] = cell;
           return x === i && y == j;
         });
-        squares[index].style.backgroundColor = 'white';
+        squares[index].style.backgroundColor = 'hsl(0, 0%, 100%)';
       });
     }
   });
