@@ -18,3 +18,7 @@
 8. Jest
 9. Babel
 10. Webpack
+
+#### Sources:
+
+- Fonts from <a href="https://fonts.google.com/">Google Fonts</a>
