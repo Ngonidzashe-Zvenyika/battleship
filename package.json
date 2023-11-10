@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --watch",
     "webpack": "webpack --watch",
-    "format": "eslint-config-prettier"
+    "format": "eslint-config-prettier",
+    "gh-pages": "git subtree push --prefix dist origin gh-pages"
   },
   "keywords": [],
   "author": "",
